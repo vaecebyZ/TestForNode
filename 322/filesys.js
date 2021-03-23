@@ -11,7 +11,7 @@ fs.readFile('233.txt','UTF-8',(err,data)=>{
 })
 
 //写入内容
-fs.writeFile('233.txt','你好Node',(err)=>{
+fs.writeFile('233.txt','你好Node2333',(err)=>{
     if(err) throw err
     console.log('------------');
     console.log('|文件已经保存|');
