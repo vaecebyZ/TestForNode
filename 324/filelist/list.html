@@ -16,14 +16,15 @@
        let xhr = new XMLHttpRequest();
 
        xhr.onreadystatechange = ()=>{
+
             if(xhr.readyState == 4){
                 
                 res = JSON.parse(xhr.responseText);
-                
+                console.log(res);     
                 let htmls = ''
                 htmls+="<ul>"
                 res.forEach(element => {
-                    htmls+='<li>'+element+'</li>'
+                    htmls+='<li>'+'文件类型：'+element.fileType+'文件名：'+element.name+' 大小：'+element.size+' 创建时间：'+element.addTime+'</li>'
                 });
                 htmls+="</ul>"
 
