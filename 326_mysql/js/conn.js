@@ -4,6 +4,8 @@ const mysql = require('mysql')
 module.exports.connect = (sql, func) => {
 
 
+    console.log(sql);
+
     //创建连接字符串
     const conn = mysql.createConnection({
         host: 'localhost',

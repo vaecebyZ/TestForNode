@@ -1,5 +1,5 @@
 const fs = require('fs')
-let conn = require('./conn')
+const conn = require('./conn')
 const template = require('art-template')
 const moment = require('moment')
 
@@ -7,37 +7,80 @@ template.defaults.root = './'
 
 module.exports = (req, res) => {
 
-    if (req.method == 'GET' && req.url == '/') {
+    let url = new URL('http://localhost'+req.url)
 
-        conn.connect('select * from users', () => {
-            // console.log(conn.result);
-            let result = conn.result
+    let urls = url.pathname
 
-            if (result.err == null) {
 
-                result.data.forEach(e => {
-                    e.date = moment(e.date).format('YYYY-MM-DD hh:mm:ss')
+    if (req.method == 'GET') {
+
+        if ( urls == '/') {
+
+            conn.connect('select * from users', () => {
+                // console.log(conn.result);
+                let result = conn.result
+
+                if (result.err == null) {
+
+                    result.data.forEach(e => {
+                        e.date = moment(e.date).format('YYYY-MM-DD hh:mm:ss')
+                    })
+
+                    let htmls = template('./viwes/index.html', {
+                        value: result.data
+                    })
+
+                    res.end(htmls)
+                }
+            })
+
+        } else if ( urls == "/add") {
+
+            let htmls = template('./viwes/edit.html', {
+                value: ''
+            })
+
+            res.end(htmls)
+
+            //console.log(url);
+
+        }else if ( urls == "/edit") {
+            
+           let userId =  url.searchParams.get('id') 
+           
+            if(userId!=null){
+                conn.connect('select * from users where userId = '+userId,()=>{
+                    let result = conn.result
+
+                    if (result.err == null) {
+
+                        result.data.forEach(e => {
+                            e.date = moment(e.date).format('YYYY-MM-DD hh:mm:ss')
+                        })
+    
+                        let htmls = template('./viwes/edit.html', {
+                            value: result.data
+                        })
+    
+                        res.end(htmls)
+                    }
                 })
-
-                let htmls = template('./viwes/index.html', {
-                    value: result.data
-                })
-
-                res.end(htmls)
+               // console.log(url.searchParams.get('id'));
             }
+           // console.log(url);
+        } else if ( urls== "/search") {
+            console.log(url);
+        } else {
+            fs.readFile('.' + urls, (err, data) => {
+                if (err) throw err
+                res.end(data)
+            })
+        }
 
-        })
-
-
-    } else if (req.method == 'POST' && req.url == "/add") {
-        console.log(req);
-
-    } else if (req.method == 'POST' && req.url == "/search") {
-        console.log(req);
-    } else {
-        fs.readFile('.' + req.url, (err, data) => {
-            if (err) throw err
-            res.end(data)
-        })
+    }else if (req.method =='POST'){
+        res.end(JSON.stringify('post'))
+    }else{
+        res.end(JSON.stringify('下次一定'))
     }
+
 }
