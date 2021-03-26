@@ -1,11 +1,106 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <title>用户管理beta</title>
 </head>
+
+
+<style>
+    *,
+    .seachBar {
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
+
 <body>
-    {{value}}
+
+    <div class="row">
+        <div class="col-md-6 seachBar" style="text-align: right; line-height: 35px;">
+            <input type="text" placeholder="输入关键字" class="input">
+        </div>
+
+
+        <div class="col-md-6 seachBar">
+            <input type="button" class="btn btn-primary" value="搜索">
+            <input type="button" data-toggle="modal" data-target=".bs-example-modal-sm" class="btn btn-danger"
+                value="添加">
+        </div>
+
+    </div>
+
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <form action="./add" method="post" style="text-align: center;">
+                    <ul class="list-group">
+                        <li class="list-group-item">头像： <input name="avatar" type="text" class="input"></li>
+                        <li class="list-group-item"> 登录名：<input name="userName" type="text" class="input"></li>
+                        <li class="list-group-item"> 昵称：<input name="nickName" type="text" class="input"></li>
+                        <li class="list-group-item">性别：<input name="gender" type="text" class="input"></li>
+                        <li class="list-group-item">邮箱：<input name="email" type="text" class="input"></li>
+                        <li class="list-group-item"> 地区：<input name="address" type="text" class="input"><br></li>
+                        <li class="list-group-item"> 签名：<input name="about" type="text" class="input"><br></li>
+                        <li class="list-group-item"><input type="submit" class="btn btn-primary" value="保存">
+                            <input type="button" data-toggle="modal" data-target=".bs-example-modal-sm"
+                                class="btn btn-danger" value="取消"></li>
+                    </ul>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div>
+
+        <table class="table table-striped">
+            <thead>
+                <td>ID</td>
+                <td>头像</td>
+                <td>登录名</td>
+                <td>性别</td>
+                <td>昵称</td>
+                <td>邮箱</td>
+                <td>地区</td>
+                <td>签名</td>
+                <td>钱包</td>
+                <td>是否封禁</td>
+                <td>注册时间</td>
+                <td>操作</td>
+            </thead>
+
+            {{each value}}
+            <tr>
+                <td>{{$value.userId}}</td>
+                <td><img style="width: 80px; height: 80px;" src={{$value.userAvatar}} alt="我TM裂开"></td>
+                <td>{{$value.userName}}</td>
+                <td>{{$value.userGender}}</td>
+                <td>{{$value.userNickName}}</td>
+                <td>{{$value.userEmail}}</td>
+                <td>{{$value.userAddress}}</td>
+                <td>{{$value.userAbout}}</td>
+                <td>{{$value.userWallet}}</td>
+
+                {{if $value.isBan == "1"}}
+                <td>是</td>
+                {{else if $value.isBan == "0"}}
+                <td>否</td>
+                {{/if}}
+
+                <td>{{$value.date}}</td>
+                <td><a href="#"> 编辑</a> |<a href="#">删除</a> </td>
+            </tr>
+            {{/each}}
+        </table>
+
+    </div>
+
 </body>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
 </html>
