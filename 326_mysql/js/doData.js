@@ -37,7 +37,7 @@ module.exports = (req, res) => {
         } else if ( urls == "/add") {
 
             let htmls = template('./viwes/edit.html', {
-                value: ''
+                value: '{}'
             })
 
             res.end(htmls)
@@ -78,7 +78,11 @@ module.exports = (req, res) => {
         }
 
     }else if (req.method =='POST'){
-        res.end(JSON.stringify('post'))
+        if(urls=="/edit"){
+           console.log(req);
+           res.end(JSON.stringify('edit post'))
+        }
+       
     }else{
         res.end(JSON.stringify('下次一定'))
     }
