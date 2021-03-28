@@ -123,23 +123,18 @@ module.exports = (req, res) => {
 
                     if (result.err == null) {
 
-                        conn.connect('select * from users', () => {
-                            // console.log(conn.result);
-                            let result = conn.result
+                        
+                    res.setHeader('Content-type','text/html;charset=utf8')
+                    let htmls =
+                    `
+                         <script>
+                         alert('删除成功');
+                         window.location="./"
+                         </script>
+                   `
 
-                            if (result.err == null) {
-
-                                result.data.forEach(e => {
-                                    e.date = moment(e.date).format('YYYY-MM-DD hh:mm:ss')
-                                })
-
-                                let htmls = template('./viwes/index.html', {
-                                    value: result.data
-                                })
-
-                                res.end(htmls)
-                            }
-                        })
+                           res.end(htmls)
+                    
                     }
                 })
             }
@@ -179,10 +174,20 @@ module.exports = (req, res) => {
                     conn.connect(sql, () => {
                         let result = conn.result
                         if (result.err == null) {
-                            let htmls = template('./viwes/edit.html', {
-                                value: user
-                            })
-                            res.end(htmls)
+                            // let htmls = template('./viwes/edit.html', {
+                            //     value: user
+                            // })
+
+                    res.setHeader('Content-type','text/html;charset=utf8')
+                      let htmls =
+                      `
+                           <script>
+                           alert('修改成功');
+                           window.location="./"
+                           </script>
+                     `
+
+                             res.end(htmls)
                         }
                     });
                 } else {
@@ -201,9 +206,14 @@ module.exports = (req, res) => {
                     conn.connect(sql, () => {
                         let result = conn.result
                         if (result.err == null) {
-                            let htmls = template('./viwes/edit.html', {
-                                value: user
-                            })
+                            res.setHeader('Content-type','text/html;charset=utf8')
+                            let htmls =
+                            `
+                                 <script>
+                                 alert('添加成功');
+                                 window.location="./"
+                                 </script>
+                           `
                             res.end(htmls)
                         }
                     });
