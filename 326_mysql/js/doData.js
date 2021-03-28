@@ -68,7 +68,82 @@ module.exports = (req, res) => {
                 })
             }
         } else if (urls == "/search") {
-            console.log(url);
+            let keyword = url.searchParams.get('keyword')
+            if (keyword != '') {
+
+
+                conn.connect("select * from users where userName like '%" + keyword + "%'", () => {
+                    // console.log(conn.result);
+                    let result = conn.result
+
+                    if (result.err == null) {
+
+                        result.data.forEach(e => {
+                            e.date = moment(e.date).format('YYYY-MM-DD hh:mm:ss')
+                        })
+
+                        let htmls = template('./viwes/index.html', {
+                            value: result.data
+                        })
+
+                        res.end(htmls)
+                    }
+                })
+
+            } else {
+
+                conn.connect('select * from users', () => {
+                    // console.log(conn.result);
+                    let result = conn.result
+
+                    if (result.err == null) {
+
+                        result.data.forEach(e => {
+                            e.date = moment(e.date).format('YYYY-MM-DD hh:mm:ss')
+                        })
+
+                        let htmls = template('./viwes/index.html', {
+                            value: result.data
+                        })
+
+                        res.end(htmls)
+                    }
+                })
+
+            }
+
+            //console.log(url);
+        } else if (urls == "/del") {
+
+            let id = url.searchParams.get('id')
+
+            if (id != '') {
+                conn.connect('delete from users where userId = ' + id, () => {
+                    let result = conn.result
+
+                    if (result.err == null) {
+
+                        conn.connect('select * from users', () => {
+                            // console.log(conn.result);
+                            let result = conn.result
+
+                            if (result.err == null) {
+
+                                result.data.forEach(e => {
+                                    e.date = moment(e.date).format('YYYY-MM-DD hh:mm:ss')
+                                })
+
+                                let htmls = template('./viwes/index.html', {
+                                    value: result.data
+                                })
+
+                                res.end(htmls)
+                            }
+                        })
+                    }
+                })
+            }
+
         } else {
             fs.readFile('.' + urls, (err, data) => {
                 if (err) throw err
@@ -119,19 +194,19 @@ module.exports = (req, res) => {
                         `","` + user.userEmail +
                         `","` + user.userAddress +
                         `","` + user.userAbout +
-                        `","` + user.isBan + 
+                        `","` + user.isBan +
                         `","` + moment().format('YYYY-MM-DD hh:mm:ss') +
                         `")`
 
-                        conn.connect(sql, () => {
-                            let result = conn.result
-                            if (result.err == null) {
-                                let htmls = template('./viwes/edit.html', {
-                                    value: user
-                                })
-                                res.end(htmls)
-                            }
-                        });
+                    conn.connect(sql, () => {
+                        let result = conn.result
+                        if (result.err == null) {
+                            let htmls = template('./viwes/edit.html', {
+                                value: user
+                            })
+                            res.end(htmls)
+                        }
+                    });
 
                 }
             })
