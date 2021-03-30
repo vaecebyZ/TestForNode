@@ -1,7 +1,7 @@
 const moment = require('moment');
 const db = require('./db')
-const querystring = require('querystring');
-
+const formidable = require('formidable')
+const fs = require('fs')
 
 function toMain(req, res) {
 
@@ -47,15 +47,26 @@ function getSearch(req, res) {
 
     if (keyword != "") {
 
-        db.getSearch(keyword).then(data => res.render('index.html', {
-            value: data
-        }))
+
+        db.getSearch(keyword).then(data => {
+            data.forEach(element => {
+                element.date = moment(element.date).format('YYYY-MM-DD hh:mm:ss')
+            });
+            res.render('index.html', {
+                value: data
+            })
+        })
 
 
     } else {
-        db.selectAll().then(data => res.render('index.html', {
-            value: data
-        }))
+        db.selectAll().then(data => {
+            data.forEach(element => {
+                element.date = moment(element.date).format('YYYY-MM-DD hh:mm:ss')
+            });
+            res.render('index.html', {
+                value: data
+            })
+        })
     }
 
 }
@@ -69,10 +80,7 @@ function getDel(req, res) {
 
     if (userId != null) {
 
-
-        db.delOne(userId).then(data=>{
-
-            console.log(data);
+        db.delOne(userId).then(data => {
 
             res.setHeader('Content-type', 'text/html;charset=utf8')
             let htmls =
@@ -86,48 +94,53 @@ function getDel(req, res) {
 
         })
 
-       
-
     }
-
-    // res.setHeader('Content-type', 'text/html;charset=utf8')
-    // let htmls =
-    //     `
-    //  <script>
-    //  alert('删除成功${userId}');
-    //  window.location="./"
-    //  </script>
-    //     `
-    // res.end(htmls)
 
 }
 
 function getPost(req, res) {
 
+    //使用formdata
+    let form = new formidable.IncomingForm();
 
-    data = ""
+    //设置临时得上传路径
+    form.uploadDir = './static/temp'
 
-    req.on('data', che => data += che)
+    form.parse(req, (err, fileds, files) => {
+        if (err) throw err
 
+        if (fileds.userId != '') {
+            db.editOne(fileds).then(() => {
+                upAvtar(fileds.userId)
+                res.setHeader('Content-type', 'text/html;charset=utf8')
+                res.end("<script>alert('修改成功');window.location='../'</script>")
+            })
+        } else {
+            db.addOne(fileds).then((data) => {
+                //console.log(data);
+                upAvtar(data.insertId)
+                res.setHeader('Content-type', 'text/html;charset=utf8')
+                res.end("<script>alert('添加成功');window.location='../'</script>")
+            })
+        }
 
+        function upAvtar(userId) {
+            if (files.userAvatar.size > 0) {
+                let filepath = './static/img/' + files.userAvatar.name
+                fs.rename(files.userAvatar.path, filepath, (err) => {
+                    if (err) throw err
 
-    new Promise((success, faild) => req.on('end', () => success(querystring.parse(data))))
-        .then((user) => {
-            if (user.userId != '') {
-                db.editOne(user).then((data) => {
-                    res.setHeader('Content-type', 'text/html;charset=utf8')
-
-                    res.end("<script>alert('修改成功');window.location='../'</script>")
+                    db.upImg(filepath.slice(8, filepath.length), userId)
                 })
             } else {
-                db.addOne(user).then((data) => {
-                    res.setHeader('Content-type', 'text/html;charset=utf8')
-
-                    res.end("<script>alert('添加成功');window.location='../'</script>")
+                fs.rm(files.userAvatar.path, (err) => {
+                    if (err) throw err
                 })
             }
-        })
+            //console.log(files);
+        }
 
+    })
 }
 
 module.exports = {

@@ -13,42 +13,42 @@ const conn = mysql.createConnection({
 })
 
 
-let selectAll = () => new Promise((success, faild) => conn.query('select * from users', (err, data, fli) => {
+let selectAll = () => new Promise((success, filed) => conn.query('select * from users', (err, data, flied) => {
     if (err) throw err
     success(data)
 }))
 
-let getOne = userId => new Promise((success, faild) => conn.query("select * from users where userId = " + userId, (err, data, fli) => {
+let getOne = userId => new Promise((success, failed) => conn.query("select * from users where userId = " + userId, (err, data, flied) => {
     if (err) throw err
     success(data)
 }))
 
-let delOne = userId => new Promise((success, faild) =>
+let delOne = userId => new Promise((success,failed) =>
     conn.query("delete from users where userId = " + userId, (err, data, fli) => {
         if (err) throw err
         success(data)
     })
 )
 
-let getSearch = keyword => new Promise((success, faild) => conn.query("select * from users where userName like '%" + keyword + "%'", (err, data, fil) => {
+let getSearch = keyword => new Promise((success, failed) => conn.query("select * from users where userName like '%" + keyword + "%'", (err, data,flied) => {
     if (err) throw err
     success(data)
 }))
 
 
-let editOne = user => new Promise((success, faild) => conn.query(`update users set userName = "` + user.userName +
+let editOne = user => new Promise((success, failed) => conn.query(`update users set userName = "` + user.userName +
     `",userNickName="` + user.userNickName +
     `",userGender="` + user.userGender +
     `",userEmail="` + user.userEmail +
     `",userAddress="` + user.userAddress +
     `",userAbout="` + user.userAbout +
     `",isBan="` + user.isBan + `
-"where userId=` + user.userId, (err, data, fild) => {
+"where userId=` + user.userId, (err, data, flied) => {
         if (err) throw err
         success(data)
     }))
 
-let addOne = user => new Promise((success, faild) => conn.query(`insert into users(userName,userNickName,userGender,userEmail,userAddress,userAbout,isBan,date ) values( "` + user.userName +
+let addOne = user => new Promise((success, failed) => conn.query(`insert into users(userName,userNickName,userGender,userEmail,userAddress,userAbout,isBan,date ) values( "` + user.userName +
     `","` + user.userNickName +
     `","` + user.userGender +
     `","` + user.userEmail +
@@ -56,10 +56,15 @@ let addOne = user => new Promise((success, faild) => conn.query(`insert into use
     `","` + user.userAbout +
     `","` + user.isBan +
     `","` + moment().format('YYYY-MM-DD hh:mm:ss') +
-    `")`, (err, data, fli) => {
+    `")`, (err, data,flied) => {
         if (err) throw err
         success(data)
     }))
+
+let upImg = (path,id)=>new Promise((success,failed)=>conn.query(`update users set userAvatar = '${path}' where userId = ${id}`,(err,data,flied)=>{
+    if(err) throw err
+    success(data)
+}))
 
 module.exports = {
     selectAll,
@@ -67,5 +72,6 @@ module.exports = {
     getSearch,
     addOne,
     editOne,
-    delOne
+    delOne,
+    upImg
 }

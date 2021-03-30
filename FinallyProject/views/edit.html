@@ -26,16 +26,16 @@
                     </div>
                     <div class="card-body">
 
-                        <form action="./edit" method="POST">
+                        <form action="./edit" method="POST" enctype="multipart/form-data">
                             <input name="userId" value="{{value.userId}}" type="number" style="display:none;"
                                 class="form-control">
 
                             <div class="form-group">
                                 <label>头像</label>
-                                <label for="exampleInputFile"></label>
-                                <input type="file" id="exampleInputFile">
+                                <input type="file" name="userAvatar">
                                 <p>
-                                    当前头像:<img style="width: 50px; height: 50px; " src="{{value.userAvatar}}" onerror="this.src='../img/no_img.gif'">
+                                    当前头像:<img style="width: 50px; height: 50px; " src="{{value.userAvatar}}"
+                                        onerror="this.src='../img/no_img.gif'">
                                 </p>
                             </div>
 
@@ -47,15 +47,15 @@
 
                             <div class="form-group">
                                 <label>昵称</label>
-                                <input name="userNickName" type="text" class="form-control" value="{{value.userNickName}}">
+                                <input name="userNickName" type="text" class="form-control"
+                                    value="{{value.userNickName}}">
                             </div>
 
                             <div class="form-group">
                                 <label>是否被封禁</label>
                                 <div class="form-control">
 
-                                    <input name="isBan" {{if value.isBan==1}} checked {{/if}} value="1"
-                                        type="radio"> 封禁
+                                    <input name="isBan" {{if value.isBan==1}} checked {{/if}} value="1" type="radio"> 封禁
                                     <input name="isBan" {{if value.isBan==0}} checked {{/if}} value="0"
                                         type="radio">未被封禁
 
@@ -73,7 +73,7 @@
                             <div class="form-group">
                                 <label>商店地区</label>
                                 <select name="userAddress" class="form-control form-control-sm">
-                                    <option value="" >----------请选择-----------</option>
+                                    <option value="">----------请选择-----------</option>
                                     <option value="CN" {{if value.userAddress=='CN'}} selected {{/if}}>CN</option>
                                     <option value="JP" {{if value.userAddress=='JP'}} selected {{/if}}>JP</option>
                                     <option value="KR" {{if value.userAddress=='KR'}} selected {{/if}}>KR</option>
@@ -89,10 +89,10 @@
                                 </label>
 
                                 <div class="form-control">
-                                    <input name="userGender" {{if value.userGender=='male'}} checked {{/if}} value="male"
-                                        type="radio"> 男
-                                    <input name="userGender" {{if value.userGender=='female'}} checked {{/if}} value="female"
-                                        type="radio">女
+                                    <input name="userGender" {{if value.userGender=='male'}} checked {{/if}}
+                                        value="male" type="radio"> 男
+                                    <input name="userGender" {{if value.userGender=='female'}} checked {{/if}}
+                                        value="female" type="radio">女
                                 </div>
 
 
