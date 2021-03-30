@@ -1,0 +1,96 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap/dist/css/bootstrap.min.css">
+    <title>用户管理beta</title>
+</head>
+
+
+<style>
+    *,
+    .seachBar {
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
+
+<body>
+
+
+
+    <form action="./search" method="GET">
+
+        <div class="row">
+            <div class="seachBar  col-md-6" style="text-align: right; line-height: 35px;">
+                <input name="keyword" type="text" placeholder="输入用户名" class="input">
+            </div>
+
+
+            <div class="seachBar col-md-6">
+                <!-- <input type="button" class="btn btn-primary" value="搜索"> -->
+                <button type="submit" class="btn btn-primary">搜索</button>
+                <a href="/add" class="btn btn-danger">添加</a>
+            </div>
+        </div>
+
+
+    </form>
+
+
+
+    </div>
+
+
+    <div>
+
+        <table class="table table-striped">
+            <thead>
+                <td>ID</td>
+                <td>头像</td>
+                <td>登录名</td>
+                <td>性别</td>
+                <td>昵称</td>
+                <td>邮箱</td>
+                <td>地区</td>
+                <td>签名</td>
+                <td>钱包</td>
+                <td>是否封禁</td>
+                <td>注册时间</td>
+                <td>操作</td>
+            </thead>
+
+            {{each value}}
+            <tr>
+                <td>{{$value.userId}}</td>
+                <td><img style="width: 40px; height: 40px;" onerror="this.src='../img/no_img.gif'"
+                        src={{$value.userAvatar}}></td>
+                <td>{{$value.userName}}</td>
+                <td>{{$value.userGender}}</td>
+                <td>{{$value.userNickName}}</td>
+                <td>{{$value.userEmail}}</td>
+                <td>{{$value.userAddress}}</td>
+                <td>{{$value.userAbout}}</td>
+                <td>{{$value.userWallet}}</td>
+
+                {{if $value.isBan == "1"}}
+                <td>是</td>
+                {{else if $value.isBan == "0"}}
+                <td>否</td>
+                {{/if}}
+
+                <td>{{$value.date}}</td>
+                <td><a href="./edit?id={{$value.userId}}"> 编辑</a> |<a href="./del?id={{$value.userId}}">删除</a> </td>
+            </tr>
+            {{/each}}
+        </table>
+
+    </div>
+
+</body>
+<script src="js/jquery/dist/jquery.min.js"></script>
+<script src="js/bootstrap/dist/js/bootstrap.min.js"></script>
+
+</html>

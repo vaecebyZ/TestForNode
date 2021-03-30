@@ -1,0 +1,124 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="css/bootstrap/dist/css/bootstrap.min.css">
+
+    <!--     
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md"></div>
+
+            <div class="col-md">
+                <div class="card" style="width:800px">
+                    <div class="card-header">
+                        用户信息
+                    </div>
+                    <div class="card-body">
+
+                        <form action="./edit" method="POST">
+                            <input name="userId" value="{{value.userId}}" type="number" style="display:none;"
+                                class="form-control">
+
+                            <div class="form-group">
+                                <label>头像</label>
+                                <label for="exampleInputFile"></label>
+                                <input type="file" id="exampleInputFile">
+                                <p>
+                                    当前头像:<img style="width: 50px; height: 50px; " src="{{value.userAvatar}}" onerror="this.src='../img/no_img.gif'">
+                                </p>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label>登录名</label>
+                                <input name="userName" type="text" value="{{value.userName}}" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>昵称</label>
+                                <input name="userNickName" type="text" class="form-control" value="{{value.userNickName}}">
+                            </div>
+
+                            <div class="form-group">
+                                <label>是否被封禁</label>
+                                <div class="form-control">
+
+                                    <input name="isBan" {{if value.isBan==1}} checked {{/if}} value="1"
+                                        type="radio"> 封禁
+                                    <input name="isBan" {{if value.isBan==0}} checked {{/if}} value="0"
+                                        type="radio">未被封禁
+
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label>邮箱</label>
+                                <input type="email" name="userEmail" class="form-control" value="{{value.userEmail}}">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label>商店地区</label>
+                                <select name="userAddress" class="form-control form-control-sm">
+                                    <option value="" >----------请选择-----------</option>
+                                    <option value="CN" {{if value.userAddress=='CN'}} selected {{/if}}>CN</option>
+                                    <option value="JP" {{if value.userAddress=='JP'}} selected {{/if}}>JP</option>
+                                    <option value="KR" {{if value.userAddress=='KR'}} selected {{/if}}>KR</option>
+                                    <option value="RU" {{if value.userAddress=='RU'}} selected {{/if}}>RU</option>
+                                    <option value="UK" {{if value.userAddress=='UK'}} selected {{/if}}>UK</option>
+                                    <option value="US" {{if value.userAddress=='US'}} selected {{/if}}>US</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    性别
+                                </label>
+
+                                <div class="form-control">
+                                    <input name="userGender" {{if value.userGender=='male'}} checked {{/if}} value="male"
+                                        type="radio"> 男
+                                    <input name="userGender" {{if value.userGender=='female'}} checked {{/if}} value="female"
+                                        type="radio">女
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group">
+                                <label>介绍</label>
+                                <textarea name="userAbout" class="form-control" rows="3">{{value.userAbout}}</textarea>
+                            </div>
+
+                            <button type="submit" class="btn pull-left btn-danger">提交</button>
+                            <a href="../" class="btn btn-primary">返回</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md"></div>
+
+        </div>
+    </div>
+
+
+</body>
+
+<script src="js/jquery/dist/jquery.min.js"></script>
+<script src="js/bootstrap/dist/js/bootstrap.min.js"></script>
+
+</html>
